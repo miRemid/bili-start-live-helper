@@ -9,6 +9,7 @@ import (
 	"os"
 
 	cookiejar "github.com/juju/persistent-cookiejar"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"golang.org/x/net/publicsuffix"
 )
@@ -64,6 +65,8 @@ func (a *App) GetQRCode() (model.QRCode, error) {
 	if err := json.Unmarshal(data, &qr); err != nil {
 		return qr, err
 	}
+	runtime.LogPrintf(a.ctx, "Send Signal")
+	runtime.EventsEmit(a.ctx, "qrCode", qr.Data.URL)
 	return qr, nil
 }
 
